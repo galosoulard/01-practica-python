@@ -37,8 +37,9 @@ while attempts > 0:
     print(f"Intentos restantes: {attempts}")
     print(f"Letras usadas: {', '.join(guessed)}")
 
-    letter = input("Ingresá una letra: ")
-    if not (letter in string.ascii_lowercase):
+    # Ingresar caracter y verificar que sea válido
+    letter = input("Ingresá una letra: ").lower()
+    if len(letter) != 1 or not (letter in string.ascii_lowercase):
         print("Entrada no válida.")
         print()
         continue
