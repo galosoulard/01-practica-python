@@ -1,24 +1,32 @@
 import random
 import string
 
-words = [
-    "python",
-    "programa",
-    "variable",
-    "funcion",
-    "bucle",
-    "cadena",
-    "entero",
-    "lista",
-]
+categories = {
+    "programacion": ["python", "programa", "variable"],
+    "animales": ["gato", "perro", "jirafa"],
+    "trabajos": ["profesor", "arquitecto", "abogado"]
+}
 
-word = random.choice(words)
 guessed = []
 attempts = 6
 points = 0
 
 print("¡Bienvenido al Ahorcado!")
 print()
+
+# Le pedimos al jugador ingresar una categoría válida y verificamos hasta que lo sea
+while True:
+    print("Categorías: Programacion - Animales - Trabajos")
+    category = input("Escriba el nombre de la categoría con la que desea jugar: ").lower()
+
+    if category in categories:
+        words = categories[category]
+        break
+    else:
+        print("Categoría inválida")
+        print()
+
+word = random.choice(words)
 
 while attempts > 0:
     # Mostrar progreso: letras adivinadas y guiones para las que faltan
