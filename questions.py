@@ -7,14 +7,12 @@ categories = {
     "trabajos": ["profesor", "arquitecto", "abogado"]
 }
 
-guessed = []
-attempts = 6
 points = 0
 
 print("¡Bienvenido al Ahorcado!")
 print()
 
-# Le pedimos al jugador ingresar una categoría válida y verificamos hasta que lo sea
+# Le pedimos al jugador ingresar una categoría y verificamos que sea válida, repetimos hasta que lo sea
 while True:
     print("Categorías: Programacion - Animales - Trabajos")
     category = input("Escriba el nombre de la categoría con la que desea jugar: ").lower()
@@ -26,49 +24,56 @@ while True:
         print("Categoría inválida")
         print()
 
-word = random.choice(words)
+# Aleatorizamos el orden de las palabras y se desarrolla una partida de esa categoría con una palabra diferente cada ronda
+words = random.sample(words, len(words))
+for word in words:
 
-while attempts > 0:
-    # Mostrar progreso: letras adivinadas y guiones para las que faltan
-    progress = ""
-    for letter in word:
-        if letter in guessed:
-            progress += letter + " "
-        else:
-            progress += "_ "
-    print(progress)
+    guessed = []
+    attempts = 6
 
-    # Verificar si el jugador ya adivinó la palabra completa
-    if "_" not in progress:
-        points += 6
-        print("¡Ganaste!")
-        break
+    while attempts > 0:
+        # Mostrar progreso: letras adivinadas y guiones para las que faltan
+        progress = ""
+        for letter in word:
+            if letter in guessed:
+                progress += letter + " "
+            else:
+                progress += "_ "
+        print(progress)
+
+        # Verificar si el jugador ya adivinó la palabra completa
+        if "_" not in progress:
+            points += 6
+            print("¡Ganaste!")
+            break
     
-    print(f"Intentos restantes: {attempts}")
-    print(f"Letras usadas: {', '.join(guessed)}")
+        print(f"Intentos restantes: {attempts}")
+        print(f"Letras usadas: {', '.join(guessed)}")
 
-    # Ingresar caracter y verificar que sea válido
-    letter = input("Ingresá una letra: ").lower()
-    if len(letter) != 1 or not (letter in string.ascii_lowercase):
-        print("Entrada no válida.")
+        # Ingresar caracter y verificar que sea válido
+        letter = input("Ingresá una letra: ").lower()
+        if len(letter) != 1 or not (letter in string.ascii_lowercase):
+            print("Entrada no válida.")
+            print()
+            continue
+
+        if letter in guessed:
+            print("Ya usaste esa letra.")
+        elif letter in word:
+            guessed.append(letter)
+            print("¡Bien! Esa letra está en la palabra.")
+        else:
+            guessed.append(letter)
+            attempts -= 1
+            points -= 1
+            print("Esa letra no está en la palabra.")
+
         print()
-        continue
 
-    if letter in guessed:
-        print("Ya usaste esa letra.")
-    elif letter in word:
-        guessed.append(letter)
-        print("¡Bien! Esa letra está en la palabra.")
     else:
-        guessed.append(letter)
-        attempts -= 1
-        points -= 1
-        print("Esa letra no está en la palabra.")
+        points = 0
+        print(f"¡Perdiste! La palabra era: {word}")
 
     print()
-
-else:
-    points = 0
-    print(f"¡Perdiste! La palabra era: {word}")
 
 print(f"Tu puntaje: {points}")
